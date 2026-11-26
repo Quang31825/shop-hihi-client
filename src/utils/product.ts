@@ -13,6 +13,17 @@ export function getCategories(products: Product[]): string[] {
   return [...new Set(products.map((p) => p.category))];
 }
 
+export function searchByPriceRange(products: Product[], min: number, max: number): Product[] {
+  return products.filter((p) => p.price >= min && p.price <= max);
+}
+
+export function groupByCategory(products: Product[]): Record<string, number> {
+  return products.reduce<Record<string, number>>((counts, product) => {
+    counts[product.category] = (counts[product.category] ?? 0) + 1;
+    return counts;
+  }, {});
+}
+
 export function filterProducts(products: Product[], filter: ProductFilter = {}): Product[] {
   const { keyword = "", category, maxPrice, sort } = filter;
   const kw = keyword.trim().toLowerCase();
